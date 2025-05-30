@@ -13,6 +13,7 @@
     <div data-key="65" class="key">
       <kbd>A</kbd>
       <span class="sound">clap</span>
+      <audio src="sounds/clap.wav"></audio>
     </div>
     <div data-key="83" class="key">
       <kbd>S</kbd>
@@ -59,7 +60,28 @@
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
 <script>
+addEventListener("keydown", playSound)
 
+function playSound(event){
+  console.log("pressed", event.keyCode, event.key);
+  var sound = document.querySelector(`audio[data-key = "${event.keyCode}"]`);
+  var key = document.querySelector(`.key[data-key = "${event.keyCode}"]`);
+  if (!sound) return;
+  // console.log(sound);
+  // console.log(key);
+
+  sound.currentTime = 0;
+  sound.play();
+  key.classList.add("playing");
+  }
+
+  const keys = document.querySelectorAll('.key');
+  keys.forEach (key => key.addEventListener('transitionend', removeTransition))
+
+function removeTransition(e){
+  if (e.propertyName !== "transform") return;
+  this.classList.remove("playing");
+}
 </script>
 
 
