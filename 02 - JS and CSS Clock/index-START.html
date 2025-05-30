@@ -63,11 +63,53 @@
       background: black;
       position: absolute;
       top: 50%;
+      transform-origin: 100%;
+      transform: rotate(90deg);
+      transition: all 0.05s;
+      transition-timing-function: cubic-bezier(0.19, 1.83, 0.61, 1.36);
+    }
+
+    .second-hand{
+      height: 4px;
+    }
+
+    .hour-hand{
+      height: 10px;
+      scale: 80%;
     }
 
   </style>
 
   <script>
+    const secondHand = document.querySelector('.second-hand');
+    const minutesHand = document.querySelector('.min-hand');
+    const hoursHand = document.querySelector('.hour-hand');
+
+    function setDate(){
+    const now = new Date();
+    const seconds = now.getSeconds();
+    const minutes = now.getMinutes();
+    const hours = now.getHours();
+
+    var degreeSeconds = 90+(360/60)*seconds;
+    var degreeMinutes = 90+(360/60)*minutes;
+    var degreeHours = 90+(360/12)*hours;
+
+    secondHand.style.transform = `rotate(${degreeSeconds}deg)`;
+    minutesHand.style.transform = `rotate(${degreeMinutes}deg)`;
+    hoursHand.style.transform = `rotate(${degreeHours}deg)`;
+
+   if (seconds === 0) {
+      secondHand.style.transition = "none"; 
+      secondHand.offsetHeight; // force reflow (update dom)
+      } else {
+        secondHand.style.transition = "all 0.05s cubic-bezier(0.19, 1.83, 0.61, 1.36)";
+    }
+
+    // console.log(hours, ':', minutes, ':', seconds, degreeSeconds);
+    }
+
+    setInterval(setDate, 1000);
 
 
   </script>
